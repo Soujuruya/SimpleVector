@@ -3,6 +3,7 @@
 
 #include <cstddef>    // Для size_t
 #include <algorithm> // std::copy
+#include <stdexcept> // std::out_of_range
 
 class SimpleVector{
 
@@ -65,6 +66,12 @@ public:
     //Move-оператор присваивания
     SimpleVector& operator=(SimpleVector&& other) noexcept;
 
+    // Для неконстантных объектов
+    int& operator[](size_t index); 
+
+    // Для константных объектов (чтобы можно было использовать с const SimpleVector)
+    const int& operator[](size_t index) const;
+
     //Деструктор
     ~SimpleVector() 
     {
@@ -74,13 +81,20 @@ public:
     }
 
     //Swap-фукнция
-
     friend void swap(SimpleVector& a, SimpleVector& b) noexcept {
         using std::swap;
         swap(a.data_, b.data_);
         swap(a.size_, b.size_);
         swap(a.capacity_, b.capacity_);
     }
+    //Добавление в конец
+    void push_back(int value);
+
+    //Удаление из конца
+    void pop_back();
+
+    //Размер
+    size_t size() const noexcept;
 
 private:
 
